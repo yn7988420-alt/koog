@@ -122,9 +122,12 @@ internal data class EmbeddingBatchRequestDTO(
  */
 @Serializable
 internal data class EmbeddingBatchResponseDTO(
-    @SerialName("embeddings") val embeddings: List<List<Double>>,
+    @SerialName("embeddings") val embeddings: List<List<Double>>? = null,
+    @SerialName("embedding") val embedding: List<Double>? = null,
     @SerialName("model") val modelId: String? = null
-)
+) {
+    fun normalizedEmbeddings(): List<List<Double>> = embeddings ?: embedding?.let(::listOf) ?: emptyList()
+}
 
 /**
  * Represents a request to generate an embedding using a specific model.
